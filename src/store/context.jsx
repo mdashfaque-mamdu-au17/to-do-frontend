@@ -3,7 +3,9 @@ import React, { useContext, useState, useEffect } from 'react';
 const AppContext = React.createContext();
 
 const AppProvider = ({ children }) => {
-  const [theme, setTheme] = useState(localStorage.getItem('theme') || false);
+  const [theme, setTheme] = useState(
+    localStorage.getItem('theme') ? localStorage.getItem('theme') : false
+  );
 
   const changeTheme = () => {
     setTheme(!theme);
