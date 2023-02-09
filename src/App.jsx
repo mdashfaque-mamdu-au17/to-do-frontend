@@ -3,6 +3,7 @@ import Hero from './sections/Hero';
 import Navbar from './sections/Navbar';
 import { useGlobalContext } from './store/context';
 import classNames from 'classnames';
+import RootLayout from './pages/RootLayout';
 function App() {
   const { theme } = useGlobalContext();
   return (
@@ -14,6 +15,7 @@ function App() {
     >
       <Hero />
       <Navbar />
+      <RootLayout />
     </main>
   );
 }
