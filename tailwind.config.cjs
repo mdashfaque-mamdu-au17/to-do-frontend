@@ -8,7 +8,10 @@ module.exports = {
         'secondary-dark': '#25273D',
         'gray-800': '#393A4B',
         'gray-700': '#767992',
+        'gray-600': ' #494C6B',
         'gray-500': '#9495A5',
+        'gray-300': '#E3E4F1',
+        'gray-200': '#5B5E7E',
         'violet-800': '#C8CBE7',
       },
       boxShadow: {
