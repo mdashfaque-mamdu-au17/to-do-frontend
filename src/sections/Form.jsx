@@ -1,9 +1,10 @@
 import classNames from 'classnames';
-import React from 'react';
+import React, { useRef } from 'react';
 import { useGlobalContext } from '../store/context';
 
 const Form = () => {
   const { theme } = useGlobalContext();
+  const inputRef = useRef();
 
   const formStyle = theme
     ? 'bg-secondary-dark placeholder:text-gray-700 text-violet-800 shadow-input-dark'
@@ -11,6 +12,8 @@ const Form = () => {
 
   function formSubmitHandler(event) {
     event.preventDefault();
+    console.log(inputRef.current.value);
+    inputRef.current.value = '';
   }
   return (
     <form
@@ -27,6 +30,7 @@ const Form = () => {
         ></button>
         <input
           type="text"
+          ref={inputRef}
           placeholder="Create a new todo…"
           className={classNames(
             'w-full h-12 pl-[52px] lg:pl-[72px] lg:h-16 focus:outline-none rounded-[5px] text-xs leading-3 sm:text-lg sm:leading-[18px] sm:-tracking-[0.25px] font-normal',
