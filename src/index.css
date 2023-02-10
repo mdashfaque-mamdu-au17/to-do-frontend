@@ -56,3 +56,19 @@ h6 {
 #__next {
   isolation: isolate;
 }
+
+.completedBtn {
+  background: linear-gradient(135deg, #55ddff 0%, #c058f3 100%);
+}
+
+.completeBtnHoverState:hover {
+  border: 1px solid;
+  border-image-slice: 1;
+  border-width: 1px;
+
+  border-image-source: linear-gradient(135deg, #55ddff 0%, #c058f3 100%);
+}
+
+.btn-span {
+  border-radius: 50%;
+}
