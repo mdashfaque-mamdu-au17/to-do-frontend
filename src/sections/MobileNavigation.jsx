@@ -9,7 +9,9 @@ const MobileNavigation = () => {
     ? 'bg-secondary-dark shadow-input-dark'
     : 'bg-white shadow-input-light';
   return (
-    <section className={classNames(containerStyle, '')}>
+    <section
+      className={classNames(containerStyle, 'rounded-[5px] sm:rounded-none')}
+    >
       <ul className="pt-[15px] pb-[19px] flex justify-center items-center gap-[18px]">
         <li>
           <CustomLink to="/">All</CustomLink>
