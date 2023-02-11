@@ -1,7 +1,9 @@
 import classNames from 'classnames';
 import React from 'react';
+import { Outlet } from 'react-router-dom';
 import Footer from '../sections/Footer';
 import Form from '../sections/Form';
+import MobileNavigation from '../sections/MobileNavigation';
 import { useGlobalContext } from '../store/context';
 import AllTasks from './AllTasks';
 
@@ -14,9 +16,19 @@ const RootLayout = () => {
       <div>
         <Form />
       </div>
-      <div className={classNames('mt-4 lg:mt-6', shadowStyle, containerStyle)}>
-        <AllTasks />
+      <div
+        className={classNames(
+          'mt-4 lg:mt-6 rounded-[5px] overflow-hidden',
+          shadowStyle,
+          containerStyle
+        )}
+      >
+        <Outlet />
         <Footer />
+      </div>
+
+      <div className="mt-4 sm:hidden">
+        <MobileNavigation />
       </div>
     </section>
   );
