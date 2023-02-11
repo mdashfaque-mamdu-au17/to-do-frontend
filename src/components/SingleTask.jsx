@@ -9,7 +9,6 @@ const SingleTask = ({ name, completed }) => {
 
   const textStyle = theme ? 'text-violet-800' : 'text-gray-600';
   const buttonStatus = theme ? 'border-gray-800' : '';
-  const buttonCancel = '';
   const borderStyle = theme ? 'border-b-gray-800' : 'border-b-gray-300';
   return (
     <article
