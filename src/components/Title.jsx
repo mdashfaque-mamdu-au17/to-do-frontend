@@ -3,7 +3,7 @@ import React from 'react';
 import { useGlobalContext } from '../store/context';
 
 const Title = () => {
-  const { theme } = useGlobalContext();
+  const { theme, allTasksCount } = useGlobalContext();
   const textStyle = theme ? 'text-gray-200' : 'text-gray-500';
   return (
     <p
@@ -12,7 +12,7 @@ const Title = () => {
         textStyle
       )}
     >
-      5items left
+      {allTasksCount} items left
     </p>
   );
 };
