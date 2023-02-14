@@ -3,7 +3,7 @@ import React, { useRef } from 'react';
 import { useGlobalContext } from '../store/context';
 
 const Form = () => {
-  const { theme } = useGlobalContext();
+  const { theme, createNewTaskHandler } = useGlobalContext();
   const inputRef = useRef();
 
   const formStyle = theme
@@ -12,7 +12,7 @@ const Form = () => {
 
   function formSubmitHandler(event) {
     event.preventDefault();
-    console.log(inputRef.current.value);
+    createNewTaskHandler(inputRef.current.value);
     inputRef.current.value = '';
   }
   return (
