@@ -1,15 +1,47 @@
-import React from 'react';
+import React, { useState } from 'react';
 import classNames from 'classnames';
 import { useGlobalContext } from '../store/context';
 import completedIcon from '../assets/icon-check.svg';
 import Cross from '../assets/icon-cross.svg';
+import { useLocation } from 'react-router-dom';
 
-const SingleTask = ({ name, completed }) => {
-  const { theme } = useGlobalContext();
+const SingleTask = ({ name, completed, _id: taskId }) => {
+  const [isCompleted, setIsCompleted] = useState(completed);
+  const { theme, deleteTask, updateTask } = useGlobalContext();
+  const location = useLocation();
 
   const textStyle = theme ? 'text-violet-800' : 'text-gray-600';
   const buttonStatus = theme ? 'border-gray-800' : '';
   const borderStyle = theme ? 'border-b-gray-800' : 'border-b-gray-300';
+
+  const deleteTaskHandler = () => {
+    let action;
+    if (location.pathname === '/') {
+      action = 'FETCH_ALL';
+    }
+    if (location.pathname === '/activeTasks') {
+      action = 'FETCH_ACTIVE';
+    }
+    if (location.pathname === '/completedTasks') {
+      action = 'FETCH_COMPLETED';
+    }
+    deleteTask(taskId, action);
+  };
+
+  const updateTaskHandler = () => {
+    let action;
+    if (location.pathname === '/activeTasks') {
+      action = 'FETCH_ACTIVE';
+    }
+    if (location.pathname === '/completedTasks') {
+      action = 'FETCH_COMPLETED';
+    }
+    setIsCompleted(!isCompleted);
+    updateTask(taskId, !isCompleted, action);
+  };
+
+  console.log(isCompleted);
+
   return (
     <article
       className={classNames(
@@ -25,25 +57,29 @@ const SingleTask = ({ name, completed }) => {
         <button
           className={classNames(
             'w-5 h-5 rounded-full border-solid border-[1px] lg:w-6 lg:h-6 flex items-center justify-center',
-            completed && 'completedBtn',
+            isCompleted && 'completedBtn',
             buttonStatus
           )}
+          onClick={updateTaskHandler}
         >
-          {completed && <img src={completedIcon} />}
+          {isCompleted && <img src={completedIcon} />}
         </button>
         <div>
           <p
             className={classNames(
               'text-xs leading-3 sm:text-lg sm:leading-[18px]',
               textStyle,
-              completed && 'line-through'
+              isCompleted && 'line-through'
             )}
           >
             {name}
           </p>
         </div>
       </div>
-      <button className="group/edit absolute right-5 top-1/2 transform -translate-y-1/2 lg:right-6 lg:invisible lg:group-hover/item:visible">
+      <button
+        className="group/edit absolute right-5 top-1/2 transform -translate-y-1/2 lg:right-6 lg:invisible lg:group-hover/item:visible"
+        onClick={deleteTaskHandler}
+      >
         <img src={Cross} alt="" className="w-3 h-3 lg:w-[18px] lg:h-[18px]" />
       </button>
     </article>
