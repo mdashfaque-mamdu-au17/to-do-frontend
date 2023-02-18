@@ -1,15 +1,31 @@
 import classNames from 'classnames';
 import React from 'react';
+import { useLocation } from 'react-router-dom';
 import Title from '../components/Title';
 import { useGlobalContext } from '../store/context';
 import MobileNavigation from './MobileNavigation';
 
 const Footer = () => {
-  const { theme } = useGlobalContext();
+  const { theme, clearCompleted } = useGlobalContext();
+  const location = useLocation();
   const containerStyle = theme ? 'bg-secondary-dark' : 'bg-white';
   const textStyle = theme
     ? 'text-gray-200 hover:text-gray-300'
     : 'text-gray-500 hover:text-gray-600';
+
+  const clearCompletedHander = () => {
+    let action;
+    if (location.pathname === '/') {
+      action = 'FETCH_ALL';
+    }
+    if (location.pathname === '/activeTasks') {
+      action = 'FETCH_ACTIVE';
+    }
+    if (location.pathname === '/completedTasks') {
+      action = 'FETCH_COMPLETED';
+    }
+    clearCompleted(action);
+  };
   return (
     <div className="relative">
       {/* mobile */}
@@ -28,6 +44,7 @@ const Footer = () => {
               'text-xs leading-3 font-normal sm:text-sm sm:leading-[14px] transition-all duration-500',
               textStyle
             )}
+            onClick={clearCompletedHander}
           >
             Clear Completed
           </button>
