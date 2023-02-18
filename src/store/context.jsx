@@ -126,6 +126,28 @@ const AppProvider = ({ children }) => {
     }
   };
 
+  const clearCompleted = async (fetchType) => {
+    try {
+      const response = await fetch(`${baseUrl}/tasks/clearCompleted`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (fetchType === 'FETCH_ALL' && response.ok) {
+        fetchAllTasks();
+      }
+      if (fetchType === 'FETCH_ACTIVE' && response.ok) {
+        fetchActiveTasks();
+      }
+      if (fetchType === 'FETCH_COMPLETED') {
+        fetchCompletedTasks();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -144,6 +166,7 @@ const AppProvider = ({ children }) => {
         completedTasksLoading,
         fetchCompletedTasks,
         updateTask,
+        clearCompleted,
       }}
     >
       {children}
