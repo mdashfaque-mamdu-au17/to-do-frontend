@@ -14,6 +14,9 @@ const Form = () => {
 
   function formSubmitHandler(event) {
     event.preventDefault();
+    if (inputRef.current.value === '') {
+      return;
+    }
     createNewTaskHandler(inputRef.current.value);
     inputRef.current.value = '';
     navigate('/');
