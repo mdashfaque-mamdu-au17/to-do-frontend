@@ -16,8 +16,11 @@ const getStorageTheme = () => {
 const AppProvider = ({ children }) => {
   const [theme, setTheme] = useState(getStorageTheme());
   const [allTasks, setAllTasks] = useState([]);
+  const [activeTasks, setActiveTasks] = useState([]);
+  const [completedTasks, setCompletedTasks] = useState([]);
   const [allTasksLoading, setAllTasksLoading] = useState(false);
-
+  const [activeTasksLoading, setActiveTasksLoading] = useState(false);
+  const [completedTasksLoading, setCompletedTasksLoading] = useState(false);
   const allTasksCount = allTasks.length;
 
   const changeTheme = () => {
@@ -40,9 +43,29 @@ const AppProvider = ({ children }) => {
     }
   };
 
-  useEffect(() => {
-    fetchAllTasks();
-  }, []);
+  const fetchActiveTasks = async () => {
+    try {
+      setActiveTasksLoading(true);
+      const data = await fetch(`${baseUrl}/tasks?completed=false`);
+      const result = await data.json();
+      setActiveTasks(result.tasks);
+      setActiveTasksLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchCompletedTasks = async () => {
+    try {
+      setCompletedTasksLoading(true);
+      const data = await fetch(`${baseUrl}/tasks?completed=true`);
+      const result = await data.json();
+      setCompletedTasks(result.tasks);
+      setCompletedTasksLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const createNewTaskHandler = async (newTask) => {
     try {
@@ -53,8 +76,51 @@ const AppProvider = ({ children }) => {
         },
         body: JSON.stringify({ name: newTask }),
       });
-      console.log(response);
       fetchAllTasks();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const updateTask = async (taskId, completed, fetchType) => {
+    console.log(taskId, completed);
+    try {
+      const response = await fetch(`${baseUrl}/tasks/${taskId}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ completed: completed }),
+      });
+      if (fetchType === 'FETCH_ACTIVE') {
+        fetchActiveTasks();
+      }
+      if (fetchType === 'FETCH_COMPLETED') {
+        fetchCompletedTasks();
+      }
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const deleteTask = async (taskId, fetchType) => {
+    try {
+      const response = await fetch(`${baseUrl}/tasks/${taskId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (fetchType === 'FETCH_ALL' && response.ok) {
+        fetchAllTasks();
+      }
+      if (fetchType === 'FETCH_ACTIVE' && response.ok) {
+        fetchActiveTasks();
+      }
+      if (fetchType === 'FETCH_COMPLETED') {
+        fetchCompletedTasks();
+      }
     } catch (error) {
       console.log(error);
     }
@@ -69,6 +135,15 @@ const AppProvider = ({ children }) => {
         allTasksLoading,
         allTasksCount,
         createNewTaskHandler,
+        deleteTask,
+        fetchActiveTasks,
+        activeTasksLoading,
+        activeTasks,
+        fetchAllTasks,
+        completedTasks,
+        completedTasksLoading,
+        fetchCompletedTasks,
+        updateTask,
       }}
     >
       {children}
