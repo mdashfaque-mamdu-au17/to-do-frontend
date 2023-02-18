@@ -13,7 +13,7 @@ const SingleTask = ({ name, completed, _id: taskId }) => {
   const textStyle = theme ? 'text-violet-800' : 'text-gray-600';
   const buttonStatus = theme ? 'border-gray-800' : '';
   const borderStyle = theme ? 'border-b-gray-800' : 'border-b-gray-300';
-
+  const completedStyle = theme ? 'text-light-dark' : 'text-gray-100';
   const deleteTaskHandler = () => {
     let action;
     if (location.pathname === '/') {
@@ -69,7 +69,8 @@ const SingleTask = ({ name, completed, _id: taskId }) => {
             className={classNames(
               'text-xs leading-3 sm:text-lg sm:leading-[18px]',
               textStyle,
-              isCompleted && 'line-through'
+              isCompleted && 'line-through',
+              isCompleted && completedStyle
             )}
           >
             {name}
