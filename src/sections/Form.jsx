@@ -1,9 +1,11 @@
 import classNames from 'classnames';
 import React, { useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useGlobalContext } from '../store/context';
 
 const Form = () => {
   const { theme, createNewTaskHandler } = useGlobalContext();
+  const navigate = useNavigate();
   const inputRef = useRef();
 
   const formStyle = theme
@@ -14,6 +16,7 @@ const Form = () => {
     event.preventDefault();
     createNewTaskHandler(inputRef.current.value);
     inputRef.current.value = '';
+    navigate('/');
   }
   return (
     <form
