@@ -7,7 +7,7 @@ import { useLocation } from 'react-router-dom';
 
 const SingleTask = ({ name, completed, _id: taskId }) => {
   const [isCompleted, setIsCompleted] = useState(completed);
-  const { theme, deleteTask, updateTask } = useGlobalContext();
+  const { theme, deleteTask, updateTask, disable } = useGlobalContext();
   const location = useLocation();
 
   const textStyle = theme ? 'text-violet-800' : 'text-gray-600';
@@ -40,8 +40,6 @@ const SingleTask = ({ name, completed, _id: taskId }) => {
     updateTask(taskId, !isCompleted, action);
   };
 
-  console.log(isCompleted);
-
   return (
     <article
       className={classNames(
@@ -58,7 +56,8 @@ const SingleTask = ({ name, completed, _id: taskId }) => {
           className={classNames(
             'w-5 h-5 rounded-full border-solid border-[1px] lg:w-6 lg:h-6 flex items-center justify-center',
             isCompleted && 'completedBtn',
-            buttonStatus
+            buttonStatus,
+            disable && 'cursor-wait'
           )}
           onClick={updateTaskHandler}
         >
@@ -78,7 +77,10 @@ const SingleTask = ({ name, completed, _id: taskId }) => {
         </div>
       </div>
       <button
-        className="group/edit absolute right-5 top-1/2 transform -translate-y-1/2 lg:right-6 lg:invisible lg:group-hover/item:visible"
+        className={classNames(
+          'group/edit absolute right-5 top-1/2 transform -translate-y-1/2 lg:right-6 lg:invisible lg:group-hover/item:visible',
+          disable && 'cursor-wait'
+        )}
         onClick={deleteTaskHandler}
       >
         <img src={Cross} alt="" className="w-3 h-3 lg:w-[18px] lg:h-[18px]" />

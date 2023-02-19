@@ -15,6 +15,7 @@ const getStorageTheme = () => {
 
 const AppProvider = ({ children }) => {
   const [theme, setTheme] = useState(getStorageTheme());
+  const [disable, setDisable] = useState(false);
   const [allTasks, setAllTasks] = useState([]);
   const [activeTasks, setActiveTasks] = useState([]);
   const [completedTasks, setCompletedTasks] = useState([]);
@@ -83,7 +84,6 @@ const AppProvider = ({ children }) => {
   };
 
   const updateTask = async (taskId, completed, fetchType) => {
-    console.log(taskId, completed);
     try {
       const response = await fetch(`${baseUrl}/tasks/${taskId}`, {
         method: 'PATCH',
@@ -98,7 +98,6 @@ const AppProvider = ({ children }) => {
       if (fetchType === 'FETCH_COMPLETED') {
         fetchCompletedTasks();
       }
-      console.log(response);
     } catch (error) {
       console.log(error);
     }
@@ -106,20 +105,25 @@ const AppProvider = ({ children }) => {
 
   const deleteTask = async (taskId, fetchType) => {
     try {
+      setDisable(true);
       const response = await fetch(`${baseUrl}/tasks/${taskId}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
         },
       });
+
       if (fetchType === 'FETCH_ALL' && response.ok) {
         fetchAllTasks();
+        setDisable(false);
       }
       if (fetchType === 'FETCH_ACTIVE' && response.ok) {
         fetchActiveTasks();
+        setDisable(false);
       }
       if (fetchType === 'FETCH_COMPLETED') {
         fetchCompletedTasks();
+        setDisable(false);
       }
     } catch (error) {
       console.log(error);
@@ -167,6 +171,7 @@ const AppProvider = ({ children }) => {
         fetchCompletedTasks,
         updateTask,
         clearCompleted,
+        disable,
       }}
     >
       {children}
